@@ -19,7 +19,7 @@ export default function Home() {
 
       const output = uniqueForms.map((form) => ({
         form,
-        operator: data[form] || "UGUR/MERVE/RISK ONAYI BEKLEYEN CIHAZ VEYA ANKARA CIHAZI",
+        operator: data[form] || "UGUR / MERVE / RISK ONAYI BEKLEYEN CIHAZ VEYA ANKARA CIHAZI",
       }));
 
       setResults(output);
