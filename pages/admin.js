@@ -32,6 +32,7 @@ export default function Admin() {
     }
 
     try {
+      // GitHub'dan dosyayı al
       const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -40,14 +41,23 @@ export default function Admin() {
       });
 
       const file = await res.json();
-      const currentData = JSON.parse(atob(file.content));
 
+      // ✅ UTF-8 güvenli base64 decode
+      const binary = atob(file.content);
+      const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+      const decodedContent = new TextDecoder("utf-8").decode(bytes);
+      const currentData = JSON.parse(decodedContent);
+
+      // Yeni formları ekle
       formArray.forEach((form) => {
         currentData[form] = operator;
       });
 
-      const updatedContent = btoa(JSON.stringify(currentData, null, 2));
+      // ✅ UTF-8 güvenli base64 encode
+      const encoded = new TextEncoder().encode(JSON.stringify(currentData, null, 2));
+      const safeBase64 = btoa(String.fromCharCode(...encoded));
 
+      // Güncelleme isteği gönder
       const updateRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
         method: "PUT",
         headers: {
@@ -56,7 +66,7 @@ export default function Admin() {
         },
         body: JSON.stringify({
           message: `Formlar güncellendi: ${operator}`,
-          content: updatedContent,
+          content: safeBase64,
           sha: file.sha,
         }),
       });
@@ -84,7 +94,7 @@ export default function Admin() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Şifre: Fp9097"
+            placeholder=""
             style={{ width: "100%", padding: 10 }}
           />
           <button onClick={login} style={{ marginTop: 10, padding: "10px 20px" }}>
