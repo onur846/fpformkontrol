@@ -7,21 +7,15 @@ export default function Home() {
   const [searchForm, setSearchForm] = useState("");
   const [searchResult, setSearchResult] = useState("");
 
-  // JSON dosyasını fetch + decode et (UTF-8 güvenli şekilde)
+  // JSON verisini yükle
   useEffect(() => {
     fetch("/form-data.json")
-      .then((res) => res.arrayBuffer())
-      .then((buffer) => {
-        const decoded = new TextDecoder("utf-8").decode(new Uint8Array(buffer));
-        const data = JSON.parse(decoded);
-        setFormData(data);
-      })
-      .catch((err) => {
-        console.error("form-data.json okunamadı", err);
-        setFormData({});
-      });
+      .then((res) => res.json())
+      .then((data) => setFormData(data))
+      .catch((err) => console.error("form-data.json okunamadı", err));
   }, []);
 
+  // Toplu sorgu
   const handleCheck = () => {
     const matches = inputText.match(/\b\d{6}\b/g);
     if (!matches) {
@@ -32,11 +26,12 @@ export default function Home() {
     const uniqueForms = [...new Set(matches)];
     const results = uniqueForms.map((form) => ({
       form,
-      operator: formData[form] || "⚠️ Sistemde yok",
+      operator: formData[form] || "Uğur / Merve / Risk Onayı Bekleyen Cihaz / Ankara Cihazı",
     }));
     setBulkResults(results);
   };
 
+  // Tekli arama
   const handleSearch = () => {
     const clean = searchForm.trim();
     if (!/^\d{6}$/.test(clean)) {
