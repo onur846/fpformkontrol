@@ -69,10 +69,37 @@ export default function Home() {
   }, {});
 
   return (
-    <div style={{ background: "#2471A3", minHeight: "100vh", padding: "20px", fontFamily: "Arial, sans-serif", color: "#fff" }}>
-      <div style={{ maxWidth: 800, margin: "auto", background: "#2471A3", padding: 30, borderRadius: 16, boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}>
-        <img src="https://fpprotr.com/wp-content/uploads/2023/04/fppro-logo-symbol-white-nosubtitle.png" alt="Logo" style={{ maxWidth: 180, display: "block", margin: "0 auto 20px" }} />
-        <h2 style={{ textAlign: "center", marginBottom: 30, fontSize: 26 }}>Form Numarası Sorgulama</h2>
+    <div
+      style={{
+        background: "#2471A3",
+        minHeight: "100vh",
+        padding: "20px",
+        fontFamily: "Arial, sans-serif",
+        color: "#fff",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 800,
+          background: "#2471A3",
+          padding: 30,
+          borderRadius: 16,
+          boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+          boxSizing: "border-box",
+        }}
+      >
+        <img
+          src="https://fpprotr.com/wp-content/uploads/2023/04/fppro-logo-symbol-white-nosubtitle.png"
+          alt="Logo"
+          style={{ maxWidth: 180, display: "block", margin: "0 auto 20px" }}
+        />
+        <h2 style={{ textAlign: "center", marginBottom: 30, fontSize: 26 }}>
+          Form Numarası Sorgulama
+        </h2>
 
         {/* Tekli form arama */}
         <div style={{ marginBottom: 40 }}>
