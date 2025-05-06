@@ -53,9 +53,9 @@ export default function Home() {
   };
 
   return (
-    <div style={{ background: "#eef1f5", minHeight: "100vh", padding: "20px", fontFamily: "Arial, sans-serif" }}>
+    <div style={{ background: "#2471A3", minHeight: "100vh", padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <div style={{ maxWidth: 800, margin: "auto", background: "#fff", padding: 30, borderRadius: 16, boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}>
-        <img src="/logo.png" alt="Logo" style={{ maxWidth: 180, display: "block", margin: "0 auto 20px" }} />
+        <img src="https://fpprotr.com/wp-content/uploads/2023/04/fppro-logo-symbol-white-nosubtitle.png" alt="Logo" style={{ maxWidth: 180, display: "block", margin: "0 auto 20px" }} />
         <h2 style={{ textAlign: "center", marginBottom: 30, fontSize: 26 }}>Form Numarası Sorgulama</h2>
 
         {/* Tekli form arama */}
