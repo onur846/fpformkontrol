@@ -15,6 +15,22 @@ export default function Admin() {
     }
   };
 
+  const toBase64 = (str) => {
+    const utf8 = new TextEncoder().encode(str);
+    let binary = "";
+    utf8.forEach((b) => (binary += String.fromCharCode(b)));
+    return btoa(binary);
+  };
+
+  const fromBase64 = (str) => {
+    const binary = atob(str);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return new TextDecoder().decode(bytes);
+  };
+
   const guncelle = async () => {
     const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
     const owner = "onur846";
@@ -40,13 +56,13 @@ export default function Admin() {
       });
 
       const file = await res.json();
-      const currentData = JSON.parse(atob(file.content));
+      const currentData = JSON.parse(fromBase64(file.content));
 
       formArray.forEach((form) => {
         currentData[form] = operator;
       });
 
-      const updatedContent = btoa(JSON.stringify(currentData, null, 2));
+      const updatedContent = toBase64(JSON.stringify(currentData, null, 2));
 
       const updateRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
         method: "PUT",
@@ -84,7 +100,7 @@ export default function Admin() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Şifre: Fp9097"
+            placeholder=""
             style={{ width: "100%", padding: 10 }}
           />
           <button onClick={login} style={{ marginTop: 10, padding: "10px 20px" }}>
