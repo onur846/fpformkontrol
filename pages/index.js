@@ -23,7 +23,7 @@ export default function Home() {
   };
 
   const handleCheck = () => {
-    const matches = inputText.match(/\b\d{6}\b/g);
+    const matches = inputText.match(/\b1\d{5}\b/g); // sadece 1 ile başlayanlar
     if (!matches) {
       setGroupedResults({ "❌ Hiçbir form numarası bulunamadı": [] });
       return;
@@ -44,13 +44,29 @@ export default function Home() {
 
   const handleSearch = () => {
     const clean = searchForm.trim();
-    if (!/^\d{6}$/.test(clean)) {
-      setSearchResult("❌ Lütfen 6 haneli geçerli bir form numarası girin.");
+    if (!/^1\d{5}$/.test(clean)) {
+      setSearchResult("❌ Lütfen 1 ile başlayan 6 haneli geçerli bir form numarası girin.");
       return;
     }
     const owner = formData[clean];
     setSearchResult(owner ? `✅ ${clean} → ${owner.toUpperCase()}` : `⚠️ ${clean} sistemde bulunamadı.`);
   };
+
+  const operatorOrder = [
+    "onur",
+    "yunus",
+    "kübra",
+    "görkay",
+    "Uğur / Merve / Risk Onayı Bekleyen Cihaz / Ankara Cihazı"
+  ];
+
+  const sortedGroupedResults = operatorOrder.reduce((acc, operator) => {
+    const foundKey = Object.keys(groupedResults).find(
+      key => key.toLowerCase() === operator.toLowerCase()
+    );
+    if (foundKey) acc[foundKey] = groupedResults[foundKey];
+    return acc;
+  }, {});
 
   return (
     <div style={{ background: "#2471A3", minHeight: "100vh", padding: "20px", fontFamily: "Arial, sans-serif", color: "#fff" }}>
@@ -113,9 +129,9 @@ export default function Home() {
         </div>
 
         {/* Gruplanmış sonuçlar */}
-        {Object.keys(groupedResults).length > 0 && (
+        {Object.keys(sortedGroupedResults).length > 0 && (
           <div style={{ marginTop: 40 }}>
-            {Object.entries(groupedResults).map(([operator, forms], idx) => (
+            {Object.entries(sortedGroupedResults).map(([operator, forms], idx) => (
               <div key={idx} style={{ marginBottom: 30 }}>
                 <h3 style={{ borderBottom: "1px solid #fff", paddingBottom: 6, marginBottom: 10, fontSize: 18 }}>{operator.toUpperCase()}</h3>
                 <ul style={{ listStyle: "none", paddingLeft: 0 }}>
