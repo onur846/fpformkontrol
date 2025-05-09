@@ -15,7 +15,7 @@ export default function Home() {
   }, []);
 
   const extractTimeInfo = (text, form) => {
-    const line = text.split("\n").find(l => l.includes(form));
+    const line = text.split("\n").find((l) => l.includes(form));
     if (!line) return "";
     const hourMatch = line.match(/\b\d{1,2}:\d{2}\b/);
     const relativeMatch = line.match(/\b(dün|bugün|yarın)\b/i);
@@ -42,6 +42,11 @@ export default function Home() {
     setGroupedResults(groups);
   };
 
+  const handleClear = () => {
+    setInputText("");
+    setGroupedResults({});
+  };
+
   const handleSearch = () => {
     const clean = searchForm.trim();
     if (!/^1\d{5}$/.test(clean)) {
@@ -57,12 +62,12 @@ export default function Home() {
     "yunus",
     "kübra",
     "görkay",
-    "Uğur / Merve / Risk Onayı Bekleyen Cihaz / Ankara Cihazı"
+    "Uğur / Merve / Risk Onayı Bekleyen Cihaz / Ankara Cihazı",
   ];
 
   const sortedGroupedResults = operatorOrder.reduce((acc, operator) => {
     const foundKey = Object.keys(groupedResults).find(
-      key => key.toLowerCase() === operator.toLowerCase()
+      (key) => key.toLowerCase() === operator.toLowerCase()
     );
     if (foundKey) acc[foundKey] = groupedResults[foundKey];
     return acc;
@@ -88,8 +93,8 @@ export default function Home() {
           background: "#2471A3",
           padding: 30,
           borderRadius: 16,
-          boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
           boxSizing: "border-box",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
         }}
       >
         <img
@@ -121,7 +126,14 @@ export default function Home() {
           />
           <button
             onClick={handleSearch}
-            style={{ padding: "10px 24px", fontSize: 16, background: "#0070f3", color: "#fff", border: "none", borderRadius: 6 }}
+            style={{
+              padding: "10px 24px",
+              fontSize: 16,
+              background: "#0070f3",
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+            }}
           >
             Sorgula
           </button>
@@ -147,12 +159,37 @@ export default function Home() {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
           />
-          <button
-            onClick={handleCheck}
-            style={{ padding: "10px 24px", marginTop: 12, fontSize: 16, background: "#0070f3", color: "#fff", border: "none", borderRadius: 6 }}
-          >
-            Toplu Sorgula
-          </button>
+
+          <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+            <button
+              onClick={handleCheck}
+              style={{
+                flex: 1,
+                padding: "10px 24px",
+                fontSize: 16,
+                background: "#0070f3",
+                color: "#fff",
+                border: "none",
+                borderRadius: 6,
+              }}
+            >
+              Toplu Sorgula
+            </button>
+            <button
+              onClick={handleClear}
+              style={{
+                flex: 1,
+                padding: "10px 24px",
+                fontSize: 16,
+                background: "#a94442",
+                color: "#fff",
+                border: "none",
+                borderRadius: 6,
+              }}
+            >
+              Temizle
+            </button>
+          </div>
         </div>
 
         {/* Gruplanmış sonuçlar */}
@@ -160,13 +197,17 @@ export default function Home() {
           <div style={{ marginTop: 40 }}>
             {Object.entries(sortedGroupedResults).map(([operator, forms], idx) => (
               <div key={idx} style={{ marginBottom: 30 }}>
-                <h3 style={{ borderBottom: "1px solid #fff", paddingBottom: 6, marginBottom: 10, fontSize: 18 }}>{operator.toUpperCase()}</h3>
+                <h3 style={{ borderBottom: "1px solid #fff", paddingBottom: 6, marginBottom: 10, fontSize: 18 }}>
+                  {operator.toUpperCase()}
+                </h3>
                 <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                   {forms.map((item, i) => (
                     <li key={i} style={{ marginBottom: 6, fontSize: 16 }}>
                       • {item.form}{" "}
                       {item.timeInfo && (
-                        <span style={{ color: "#ddd", fontStyle: "italic" }}>({item.timeInfo})</span>
+                        <span style={{ color: "#ddd", fontStyle: "italic" }}>
+                          ({item.timeInfo})
+                        </span>
                       )}
                     </li>
                   ))}
